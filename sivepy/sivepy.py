@@ -85,14 +85,18 @@ class SIVEP():
         with requests.Session() as s:
             p = s.post(self._LOGIN_URL, data=self._LOGIN_PAYLOAD)
             resp = s.get(url)
-            return self._process_city_id(resp.text)
+            return self._process_city_id(resp.text, city_name)
 
-    def _process_city_id(self, html):
+    def _process_city_id(self, html, name):
         soup = BeautifulSoup(html, 'lxml')
         raw = soup.find_all('script')[1]
         raw = raw.get_text()
-        cid = re.search("cd_municipio.value = \'(.*)\'", raw).group(1)
-        return int(cid)
+        cid = re.search("cd_municipio.value = \'(.*)\'", raw)
+        if not cid:
+            # disambiguation. E.g. "careiro" vs "careiro da varzea"
+            cid = re.search("<option value=\'(.*)\'>{}</option>"\
+                            .format(name.upper()), raw)
+        return int(cid.group(1))
 
     def _process_notifications(self, html):
         soup = BeautifulSoup(html, 'lxml')
