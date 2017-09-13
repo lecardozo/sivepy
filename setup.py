@@ -9,8 +9,11 @@ setup(name='sivepy',
       license='MIT',
       packages=['sivepy'],
       install_requires=[
+          'bs4',
           'click',
+          'html.parser',
           'pandas',
-          'bs4'
+          'requests',
+          'unidecode'
       ],
       zip_safe=False)

@@ -88,14 +88,14 @@ class SIVEP():
             return self._process_city_id(resp.text)
 
     def _process_city_id(self, html):
-        soup = BeautifulSoup(html, 'lxml')
+        soup = BeautifulSoup(html, 'html.parser')
         raw = soup.find_all('script')[1]
         raw = raw.get_text()
         cid = re.search("cd_municipio.value = \'(.*)\'", raw).group(1)
         return int(cid)
 
     def _process_notifications(self, html):
-        soup = BeautifulSoup(html, 'lxml')
+        soup = BeautifulSoup(html, 'html.parser')
         breaks = soup.find_all('p', attrs={'class':'BREAK'})
         tables = [pbreak.fetchPreviousSiblings()[0] for pbreak in breaks]
         tables.append(soup.find_all('table')[-2])
