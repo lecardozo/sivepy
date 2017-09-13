@@ -11,7 +11,7 @@ setup(name='sivepy',
       install_requires=[
           'bs4',
           'click',
-          'htmlparser',
+          'lxml',
           'pandas',
           'requests',
           'unidecode'
